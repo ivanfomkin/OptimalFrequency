@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Результат расчетов</title>
+    <link th:href="@{style.css}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+<th:block th:replace="~{navbar::navbar}"></th:block>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+crossorigin="anonymous"></script>
+<div class="col-lg-8 mx-auto p-3 py-md-5">
+    <header class="d-flex align-items-center pb-3 mb-5 border-bottom">
+        <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+            <span class="fs-4">Определение оптимальной периодичности воздействия по допустимому уровню безотказности</span>
+        </a>
+    </header>
+    <main th:unless="${response.getNormalDistributionCriteria().isNormalDistribution()}">
+        <div class="alert alert-danger" role="alert">
+            Значения из выборки не подчиняется нормальному закону. Значение критерия согласия (хи-квадрат) Пирсона:
+            <span th:text="${#numbers.formatDecimal(response.getNormalDistributionCriteria().getPirsonValue(), 1, 3, 'POINT')}"></span>.
+            Теоретическое значение: <span
+                th:text="${#numbers.formatDecimal(response.getNormalDistributionCriteria().getPirsonTheoreticValue(), 1, 3, 'POINT')}"></span>
+        </div>
+    </main>
+    <main th:if="${response.getNormalDistributionCriteria().isNormalDistribution()}"><br>
+        <div class="container">
+            <p><b>Оптимальная периодичность воздействия для величины риска </b> <th:block th:text="${acceptableLevel}"></th:block>:
+                <th:block
+                        th:text="${#numbers.formatDecimal(response.getOptimalMileage(), 1, 2, 'POINT')} + ' км'"></th:block>
+            </p>
+            <h6>Статистическая обработка данных</h6>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th title="Номер интервала"> № п/п</th>
+                    <th title="Границы интервала"><i>X</i>(границы)</th>
+                    <th title="Середина интервала"><span class="formula"><i>X</i><span><sup>I</sup><sub>i</sub></span></span></th>
+                    <th title="Количество значений в интервале"><span class="formula">m<span><sup>I</sup><sub>i</sub></span></span></th>
+                    <th><span class="sum">Σ</span><span class="formula">m<span><sup>I</sup><sub>i</sub></span></span>
+                    </th>
+                    <th title="Частость"><span class="formula"><i>W</i><span><sup>I</sup><sub>i</sub></span></span></th>
+                    <th title="Оценка вероятности отказа"><span class="formula"><i>F</i><span><sup>I</sup><sub>i</sub></span></span></th>
+                    <th title="Оценка плотности вероятности отказа"><span class="formula"><i>f</i><span><sup>I</sup><sub>i</sub></span></span> ∙ (10 <sup>-3</sup>)
+                    </th>
+                    <th title="Оценка вероятности безотказной работы"><span class="formula"><i>P</i><span><sup>I</sup><sub>i</sub></span></span> = 1 - <span
+                            class="formula"><i>F</i><span><sup>I</sup><sub>i</sub></span></span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="interval, iterStat : ${response.getActualIntervals()}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${#numbers.formatDecimal(interval.getStartValue(), 1, 1, 'POINT') + ' - ' + #numbers.formatDecimal(interval.getEndValue(), 1, 1, 'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(interval.getMiddleValue(), 1, 3, 'POINT')}"></td>
+                    <td th:text="${interval.getValues().length}"></td>
+                    <td th:text="${interval.getIntervalStats().elementCountSum()}"></td>
+                    <td th:text="${#numbers.formatDecimal(interval.getIntervalStats().frequency(), 1, 4, 'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(interval.getIntervalStats().probabilityEstimation(), 1 ,4, 'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(interval.getIntervalStats().densityEstimation() * 1000, 1 ,4, 'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(interval.getIntervalStats().probabilityOfFailureFreeOperation(), 1 ,4, 'POINT')}"></td>
+                </tr>
+                <tr>
+                    <td colspan="7">Средняя наработка до отказа</td>
+                    <td colspan="2"
+                        th:text="${#numbers.formatDecimal(response.getAverageFailureMileage(), 1, 3, 'POINT')}"></td>
+                </tr>
+                <tr>
+                    <td colspan="7">Дисперсия распределения</td>
+                    <td colspan="2" th:text="${#numbers.formatDecimal(response.getVariance(), 1, 3, 'POINT')}"></td>
+                </tr>
+                <tr>
+                    <td colspan="7">Среднее квадратическое отклонение</td>
+                    <td colspan="2"
+                        th:text="${#numbers.formatDecimal(response.getStandardDeviation(), 1, 3, 'POINT')}"></td>
+                </tr>
+                <tr>
+                    <td colspan="7">Коэффициент вариации</td>
+                    <td colspan="2"
+                        th:text="${#numbers.formatDecimal(response.getVariationCoefficient(), 1, 3, 'POINT')}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <img width="90%" th:src="@{'data:image/jpg;base64,' + ${response.getHistogram()}}" alt="Chart Image"/>
+        </div>
+        <div class="container">
+            <h6>Теоретические значения параметров выборки</h6>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th title="Номер интервала">№ п/п</th>
+                    <th title="Середина интервала"><i>X<sub>i</sub></i></th>
+                    <th title="Оценка плотности вероятности отказа"><i>f</i>(<i>X</i>) ∙ (10 <sup>-3</sup>)</th>
+                    <th title="Число значений в интервале"><i>m<sub>i</sub></i></th>
+                    <th title="Частость"><i>W<sub>i</sub></i></th>
+                    <th title="Значение нормированной функции (оценка вероятности отказа)"><i>F<sub>i</sub></i></th>
+                    <th title="Оценка вероятности безотказной работы"><i>P<sub>i</sub></i></th>
+                    <th>(<span class="formula"><i>m</i><span><sup>I</sup><sub>i</sub></span></span> -
+                        <i>m<sub>i</sub></i>) / <i>m<sub>i</sub></i></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="interval, iterStat : ${response.getTheoreticIntervals()}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${#numbers.formatDecimal(interval.middleValue(), 1, 3, 'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(interval.functionValue() * 1000, 1 ,4, 'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(interval.eventsCount(), 1, 3, 'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(interval.frequency(), 1, 4, 'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(interval.probabilityEstimation(), 1, 4, 'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(interval.probabilityOfFailureFreeOperation(), 1, 4, 'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(interval.difference(), 1, 4, 'POINT')}"></td>
+                </tr>
+                <tr>
+                    <td colspan="6">Число степеней свободы</td>
+                    <td colspan="2"
+                        th:text="${response.getNormalDistributionCriteria().getNumberOfDegreesFreedom()}"></td>
+                </tr>
+                <tr>
+                    <td colspan="6">Критерий согласия (хи-квадрат) Пирсона</td>
+                    <td colspan="2"
+                        th:text="${#numbers.formatDecimal(response.getNormalDistributionCriteria().getPirsonValue(), 1, 3, 'POINT')}"></td>
+                </tr>
+                <tr>
+                    <td colspan="6">Теоретическое значение критерия согласия</td>
+                    <td colspan="2"
+                        th:text="${#numbers.formatDecimal(response.getNormalDistributionCriteria().getPirsonTheoreticValue(), 1, 3, 'POINT')}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <img width="90%" th:src="@{'data:image/jpg;base64,' + ${response.getFunctionGraph()}}" alt="Chart Image"/>
+        </div>
+
+    </main>
+</div>
+</body>
+</html>
