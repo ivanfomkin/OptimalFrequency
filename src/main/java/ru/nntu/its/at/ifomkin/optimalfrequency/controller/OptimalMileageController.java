@@ -1,14 +1,16 @@
 package ru.nntu.its.at.ifomkin.optimalfrequency.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ru.nntu.its.at.ifomkin.optimalfrequency.model.Dataset;
 import ru.nntu.its.at.ifomkin.optimalfrequency.model.OptimalMileageRequest;
 import ru.nntu.its.at.ifomkin.optimalfrequency.service.InputFileService;
-import ru.nntu.its.at.ifomkin.optimalfrequency.util.AcceptableLevelsOfFailureFreeOperationUtils;
+import ru.nntu.its.at.ifomkin.optimalfrequency.util.AcceptableLevelsOfFailureFreeOperationUtil;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class OptimalMileageController {
 
     @ModelAttribute("acceptableLevels")
     public List<Double> acceptableLevels() {
-        return AcceptableLevelsOfFailureFreeOperationUtils.ACCEPTABLE_VALUES;
+        return AcceptableLevelsOfFailureFreeOperationUtil.ACCEPTABLE_VALUES;
     }
 
     @GetMapping

@@ -5,6 +5,7 @@ import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.analysis.integration.TrapezoidIntegrator;
 import org.apache.commons.math3.analysis.integration.UnivariateIntegrator;
 import org.apache.commons.math3.util.Precision;
+import ru.nntu.its.at.ifomkin.optimalfrequency.excetion.FindFunctionArgumentException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class StandardFunctionUtil {
         if (eps <= 0.1) {
             return findFunctionArgumentByValueAndEps(functionValue, eps * 10);
         }
-        throw new RuntimeException("Не найдено значение аргумента для функции со значением " + functionValue);
+        throw new FindFunctionArgumentException("Не найдено значение аргумента для функции со значением " + functionValue);
     }
 
     private static List<Double> getAcceptableFunctionArguments() {

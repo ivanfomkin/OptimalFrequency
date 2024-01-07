@@ -3,8 +3,6 @@ package ru.nntu.its.at.ifomkin.optimalfrequency.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class OptimalMileageCalculatorTest {
 
     private final OptimalMileageCalculator optimalMileageCalculator = new OptimalMileageCalculator();

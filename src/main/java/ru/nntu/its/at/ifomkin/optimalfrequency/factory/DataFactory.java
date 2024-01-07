@@ -1,39 +1,31 @@
 package ru.nntu.its.at.ifomkin.optimalfrequency.factory;
 
-import lombok.RequiredArgsConstructor;
+import lombok.experimental.UtilityClass;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.unbescape.csv.CsvEscape;
 import ru.nntu.its.at.ifomkin.optimalfrequency.excetion.UnsupportedFileDataException;
 import ru.nntu.its.at.ifomkin.optimalfrequency.excetion.UnsupportedFileTypeException;
 import ru.nntu.its.at.ifomkin.optimalfrequency.model.filedata.InlineTxtFileData;
 import ru.nntu.its.at.ifomkin.optimalfrequency.model.filedata.InputData;
 import ru.nntu.its.at.ifomkin.optimalfrequency.model.filedata.MultilineTxtFileData;
+import ru.nntu.its.at.ifomkin.optimalfrequency.util.FileUtil;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.Arrays;
+import java.util.Objects;
 
-@Service
-@RequiredArgsConstructor
+@UtilityClass
 public class DataFactory {
 
     public InputData getData(MultipartFile file) {
         var fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
-        return switch (fileExtension) {
-            case "txt", "csv" -> getDataTxtData(file);
+        return switch (Objects.requireNonNull(fileExtension, "Не удалось определить расширение файла")) {
+            case "txt", "csv" -> getTxtData(file);
             default -> throw new UnsupportedFileTypeException(fileExtension);
         };
     }
 
-    private InputData getDataTxtData(MultipartFile file) {
-        String stringData;
-        try {
-            stringData = new String(file.getBytes());
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    private InputData getTxtData(MultipartFile file) {
+        String stringData = FileUtil.getMultipartStringContent(file);
         String[] fileLines = stringData.split("\n");
         if (fileLines.length > 1) {
             return new MultilineTxtFileData(Arrays.asList(fileLines));

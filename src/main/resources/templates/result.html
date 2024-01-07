@@ -32,8 +32,8 @@ crossorigin="anonymous"></script>
                 <th:block
                         th:text="${#numbers.formatDecimal(response.getOptimalMileage(), 1, 2, 'POINT')} + ' км'"></th:block>
             </p>
-            <h6>Статистическая обработка данных</h6>
-            <table class="table table-bordered">
+            <h6 id="stat-header">Статистическая обработка данных</h6>
+            <table class="table table-bordered" aria-describedby="stat-header">
                 <thead>
                 <tr>
                     <th title="Номер интервала"> № п/п</th>
@@ -86,8 +86,8 @@ crossorigin="anonymous"></script>
             <img width="90%" th:src="@{'data:image/jpg;base64,' + ${response.getHistogram()}}" alt="Chart Image"/>
         </div>
         <div class="container">
-            <h6>Теоретические значения параметров выборки</h6>
-            <table class="table table-bordered">
+            <h6 id="theory-header">Теоретические значения параметров выборки</h6>
+            <table class="table table-bordered" aria-describedby="theory-header">
                 <thead>
                 <tr>
                     <th title="Номер интервала">№ п/п</th>

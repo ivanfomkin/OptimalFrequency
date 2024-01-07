@@ -1,6 +1,7 @@
 package ru.nntu.its.at.ifomkin.optimalfrequency.model;
 
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 
 @Data
+@ToString(exclude = "file")
 public class OptimalMileageRequest {
     /**
      * Файл с входными данными

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.IntervalMarker;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
@@ -12,6 +11,7 @@ import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.springframework.stereotype.Service;
+import ru.nntu.its.at.ifomkin.optimalfrequency.excetion.HistogramException;
 
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
@@ -22,11 +22,6 @@ import java.util.Base64;
 @RequiredArgsConstructor
 public class ChartService {
     private final TheoreticIntervalService theoreticIntervalService;
-//    public String createHistogramBase64Image(double[] data) {
-//        JFreeChart chart = createChart(data);
-//        return convertChartToBase64(chart);
-//    }
-
     public String createDistributionDensityHistogram(double[] data, int intervalsCount) {
         JFreeChart histogram = createHistogram(data, intervalsCount);
         return convertChartToBase64(histogram);
@@ -90,11 +85,11 @@ public class ChartService {
     }
 
     private String convertChartToBase64(JFreeChart chart) {
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();) {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             ChartUtils.writeChartAsJPEG(outputStream, chart, 1000, 600);
             return Base64.getEncoder().encodeToString(outputStream.toByteArray());
         } catch (IOException e) {
-            throw new RuntimeException("Ошибка при создании гистрограммы", e);
+            throw new HistogramException("Ошибка при создании гистрограммы", e);
         }
     }
 }

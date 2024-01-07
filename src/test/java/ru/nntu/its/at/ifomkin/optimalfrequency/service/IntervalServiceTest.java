@@ -1,7 +1,6 @@
 package ru.nntu.its.at.ifomkin.optimalfrequency.service;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -93,6 +92,7 @@ class IntervalServiceTest implements DoubleArrayProvider {
         Assertions.assertEquals(expectedLength, actualIntervalLength, 0.00001);
     }
 
+    @SuppressWarnings("java:S5961")
     @Test
     @DisplayName("""
             Тест проверяет, что выборка корректно разбита на интервалы, а так же каждый интервал имеет корректное
@@ -154,6 +154,7 @@ class IntervalServiceTest implements DoubleArrayProvider {
     }
 
 
+    @SuppressWarnings("java:S5961")
     @Test
     @DisplayName("Тест проверяет значения статистических данных интервалов")
     void divideDataToIntervals_inputTestArrayWith60Elements_intervalStatsIsCorrect() {

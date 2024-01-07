@@ -3,13 +3,13 @@ package ru.nntu.its.at.ifomkin.optimalfrequency.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
-import ru.nntu.its.at.ifomkin.optimalfrequency.model.Dataset;
 import ru.nntu.its.at.ifomkin.optimalfrequency.model.Interval;
 import ru.nntu.its.at.ifomkin.optimalfrequency.model.IntervalStats;
-import ru.nntu.its.at.ifomkin.optimalfrequency.model.TheoreticInterval;
-import ru.nntu.its.at.ifomkin.optimalfrequency.util.StandardFunctionUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.DoubleSummaryStatistics;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor

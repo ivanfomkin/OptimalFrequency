@@ -5,7 +5,7 @@ import lombok.experimental.UtilityClass;
 import java.util.List;
 
 @UtilityClass
-public class AcceptableLevelsOfFailureFreeOperationUtils {
+public class AcceptableLevelsOfFailureFreeOperationUtil {
     public static final List<Double> ACCEPTABLE_VALUES = List.of(
             0.02,
             0.03,
