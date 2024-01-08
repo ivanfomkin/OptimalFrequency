@@ -3,7 +3,7 @@ package ru.nntu.its.at.ifomkin.optimalfrequency.model.filedata;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ru.nntu.its.at.ifomkin.optimalfrequency.excetion.UnsupportedFileDataException;
+import ru.nntu.its.at.ifomkin.optimalfrequency.exception.UnsupportedFileDataException;
 
 import java.util.Arrays;
 

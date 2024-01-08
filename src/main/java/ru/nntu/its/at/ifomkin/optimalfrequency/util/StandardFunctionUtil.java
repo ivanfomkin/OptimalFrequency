@@ -5,7 +5,7 @@ import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.analysis.integration.TrapezoidIntegrator;
 import org.apache.commons.math3.analysis.integration.UnivariateIntegrator;
 import org.apache.commons.math3.util.Precision;
-import ru.nntu.its.at.ifomkin.optimalfrequency.excetion.FindFunctionArgumentException;
+import ru.nntu.its.at.ifomkin.optimalfrequency.exception.FindFunctionArgumentException;
 
 import java.util.ArrayList;
 import java.util.List;

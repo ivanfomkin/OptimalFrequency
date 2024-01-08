@@ -11,7 +11,7 @@ import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.springframework.stereotype.Service;
-import ru.nntu.its.at.ifomkin.optimalfrequency.excetion.HistogramException;
+import ru.nntu.its.at.ifomkin.optimalfrequency.exception.HistogramException;
 
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
